@@ -1,3 +1,4 @@
+var pause=false;
 function obj1(){
         this.xpos=0;
         this.ypos=0;
@@ -85,7 +86,7 @@ function obj1(){
        
         this.w=3;
         this.h=2;
-        this.rotsped=0.005;
+        this.rotsped=0.001;
         this.child_obj=[];
         this.len_of_color=0;
         this.width_slice=0;
@@ -458,7 +459,7 @@ function obj1(){
         }
         this.check=function(i){
             if(this.ypos-10>game.h){
-                
+                 _obj.splice(i,1);
             }
         }
     }
@@ -510,6 +511,9 @@ function obj1(){
     var forceup=0;
     function main_(){
         
+        if(pause==false){
+            
+        
         if(game.start==true){
         window.requestAnimationFrame(main_); 
         }
@@ -534,6 +538,7 @@ function obj1(){
         game.draw.fillStyle="white";
         game.draw.fillText("Score: "+score,300,550);
         game.draw.fillText("Highscore: "+highscore,300,580);
+    }
     }
     //me function
     function me_(){
@@ -616,9 +621,13 @@ function obj1(){
 var ch=0;
    
     bod.onkeypress=function(e){
+        //alert(e.keyCode);
         
-        if(e.keyCode==32||e.keyCode==38){
-            if(game.start==false){
+        
+        if(e.keyCode==32||e.keyCode==13||e.keyCode==49){
+            if(e.keyCode==32){
+                if(game.start==false){
+                //alert(e.keyCode);
                 game.start=true; 
                 main_();
                 if(ch==0){
@@ -626,17 +635,51 @@ var ch=0;
                     ch++;
                 }
                 
+                
+            }
+                 g=0;
+            forceup=-3.5;
             }
             
+            if(e.keyCode==13){
+           // alert(e.keyCode);
+           me.color=colorz[Math.floor(Math.random()*colorz.length)];
+           
+           
+            }
+            if(e.keyCode==49){
+                if(pause===true){
+                    pause=false;
+                    //var game={draw:canvas.getContext('2d'),h:600,w:400,bg_color:"black",xpos:0,ypos:0,start:false,gameover:false};
+                    main_();
+                }
+                else{
+                    pause=true;
+                    //game=null;
+                }
+            }
             
            
-            g=0;
-            forceup=-3.5;
+           
         }
-        if(e.keyCode==39||e.keyCode==37){
-                 me.color=colorz[Math.floor(Math.random()*colorz.length)];
-            }
+        
     }
+    
     window.onload=()=>{
+        pause=false;
         main_();
     }
+    var timer,t1,n;
+    function start(){
+        timer=setInterval(inc,1000);
+    }
+function inc(){
+    t1++;
+    n=t1/10;
+    n=parseInt(n);
+}
+function stop(){
+    clearInterval(timer);
+    t1=0;
+    n=0;
+}
